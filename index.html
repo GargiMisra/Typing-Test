@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Typing Type Test</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Carter+One&display=swap");
+            * {
+                margin: 0;
+                padding: 0;
+                -webkit-box-sizing: border-box;
+                        box-sizing: border-box;
+                font-family: 'Carter One', cursive;
+            }
+            html {
+                font-size: 62.5%;
+            }
+            .main {
+                width: 100vw;
+                height: 100vh;
+                position: relative;
+                background: #3498db;
+            }
+            .main .cen {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                        transform: translate(-50%, -50%);
+                text-align: center;
+            }
+            .main .cen h1 {
+                text-transform: capitalize;
+                text-align: center;
+                margin-bottom: 3rem;
+                color: #ecf0f1;
+                text-shadow: 0.1rem 0.2rem 0.3rem #2980b9;
+                font-size: 2.1rem;
+            }
+            .main .cen h2 {
+                text-align: center;
+            }
+            .main .cen textarea {
+                background-color: #444;
+                -webkit-box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.2);
+                        box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.2);
+                border-radius: 1rem 1rem 0 0;
+                border: 2rem solid #34495e;
+                color: #ecf0f1;
+            }
+            .main .cen .mainbtn {
+                padding: 1rem 2rem;
+                border-radius: 2rem;
+                border: 0.5rem solid #2980b9;
+                background: #ecf0f1;
+                font-size: 1rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class = "main">
+            <div class="cen">
+                <h1>Welcome to Typing Speed Test</h1>
+                <h2 id="msg"></h2><br>
+                <textarea id="para" cols="100" rows="10" placeholder="Remember, be nice!"></textarea><br>
+                <button id="btn" class="mainbtn">Start</button>
+            </div>
+        </div>
+        <script type="text/javascript">
+            const setOfWords = ["Data mining is a multi-disciplinary field which combines statistics, machine learning, artificial intelligence and database technology",
+            "Data Exploration is about describing the data by means of statistical and visualization techniques. We explore data in order to bring important aspects of that data into focus for further analysis",
+            "Logical reasoning is the process of deriving previously unknown facts based on the known ones Knowledge is a progression that starts with data which is of limited utility",
+            "Logic which is concerned not only with sentential connectives but also with the internal structure of atomic propositions is usually called a predicate logic"];
+            const msg = document.getElementById('msg');
+            const typed = document.getElementById('para');
+            const btn = document.getElementById('btn');
+            let startT, endT;
+            const typeTest = () => {
+                let randNum = Math.floor(Math.random()*setOfWords.length);
+                msg.innerText = setOfWords[randNum];
+                let date = new Date();
+                startT = date.getTime();
+                btn.innerText = "Done";
+            }
+            const compWords = (text, str) => {
+                let word1 = text.split(" ");
+                let word2 = str.split(" ");
+                let cnt = 0;
+                word1.forEach(function(item,index){
+                    if(item == word2[index]){
+                        cnt++;
+                    }
+                });
+                return `${cnt} correct out of ${word1.length} words and total number of errors are ${word1.length - cnt}.`;
+            }
+            const endTest = () => {
+                let date = new Date();
+                endT = date.getTime();
+                let totalT = (endT - startT)/1000;
+                let totalStr = typed.value;
+                let wordCount = totalStr.split(" ").length;
+                let speed = Math.round((wordCount / totalT) * 60);
+                let finalMsg = compWords(msg.innerText, totalStr);
+                msg.innerText = `You typed total at ${speed} words per min. ${finalMsg}`;
+            }
+            btn.addEventListener("click", function(){
+                if(this.innerText == "Start"){
+                    typed.disabled = false;
+                    typeTest();
+                }
+                else if(this.innerText == "Done"){
+                    typed.disabled = true;
+                    btn.innerText = "Start";
+                    endTest();
+                }
+            });
+        </script>
+    </body>
+</html>
